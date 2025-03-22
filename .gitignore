@@ -1,0 +1,6 @@
+#Django caches no pushed
+
+venv/
+__pycache__/
+.env
+__pycache__/
