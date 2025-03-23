@@ -1,11 +1,12 @@
-#Django caches no pushed
-
+# Django caches no pushed
 venv/
 __pycache__/
 .env
 __pycache__/
 .DS_Store
 
-#Databases
-
+# Databases
 db.sqlite3
+
+# Temporals of coverage APP
+.coverage
