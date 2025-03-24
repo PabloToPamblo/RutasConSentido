@@ -1,4 +1,5 @@
 import pytest
+from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 
@@ -42,3 +43,57 @@ def test_create_user_from_google_payload():
     assert user.username == payload["username"]
     assert user.avatar_url == payload["avatar_url"]
     assert user.google_id == payload["google_id"]
+
+@pytest.mark.django_db
+def test_authenticated_user_can_get_profile():
+    client = APIClient()
+    user = User.objects.create_user(username="pablito", email="pablo@test.com", password="123456")
+    client.force_authenticate(user=user)
+
+    response = client.get("/api/users/profile/")
+
+    assert response.status_code == 200
+    assert response.data["username"] == "pablito"
+    assert response.data["email"] == "pablo@test.com"
+
+@pytest.mark.django_db
+def test_user_can_update_profile():
+    client = APIClient()
+    user = User.objects.create_user(username="updateuser", email="up@test.com", password="123456")
+    client.force_authenticate(user=user)
+
+    payload = {
+        "bio": "I love DevSecOps!",
+        "avatar_url": "https://avatars.example.com/pablito.jpg"
+    }
+
+    response = client.put("/api/users/update/", payload)
+
+    assert response.status_code == 200
+    assert response.data["bio"] == "I love DevSecOps!"
+    assert response.data["avatar_url"] == "https://avatars.example.com/pablito.jpg"
+
+#TESTING FOR ADMIN PANNEL
+@pytest.mark.django_db
+def test_admin_can_see_all_users():
+    client = APIClient()
+
+    admin = User.objects.create_superuser(username="admin", email="admin@test.com", password="admin123")
+    User.objects.create_user(username="user1", email="u1@test.com", password="123")
+    User.objects.create_user(username="user2", email="u2@test.com", password="123")
+
+    client.force_authenticate(user=admin)
+    response = client.get("/api/users/list/")
+
+    assert response.status_code == 200
+    assert len(response.data) == 3  # incluye admin + 2 users
+
+@pytest.mark.django_db
+def test_normal_user_cannot_see_all_users():
+    client = APIClient()
+
+    user = User.objects.create_user(username="normal", email="n@test.com", password="123")
+    client.force_authenticate(user=user)
+    response = client.get("/api/users/list/")
+
+    assert response.status_code == 403
