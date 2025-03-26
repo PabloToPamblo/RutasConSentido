@@ -5,10 +5,20 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from django.contrib.auth import get_user_model
 from google.auth.exceptions import GoogleAuthError
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 User = get_user_model()
 
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+
 class GoogleAuthView(APIView):
+
     def post(self, request):
         token = request.data.get("id_token")
 
@@ -36,13 +46,16 @@ class GoogleAuthView(APIView):
                 user.avatar_url = avatar
                 user.save()
 
+            tokens = get_tokens_for_user(user)
+
             return Response({
                 "message": "User authenticated",
                 "username": user.username,
                 "email": user.email,
                 "avatar": user.avatar_url,
                 "google_id": user.google_id,
-            }, status=status.HTTP_200_OK)
+                "tokens": tokens
+                }, status=status.HTTP_200_OK)
 
         except (ValueError, GoogleAuthError):
             return Response({"error": "Invalid token"}, status=400)
