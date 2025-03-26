@@ -43,3 +43,36 @@ def test_google_login_invalid_token_returns_400(mock_verify, client):
 
     assert response.status_code == 400
     assert response.json()["error"] == "Invalid token"
+
+@pytest.mark.django_db
+@mock.patch("app.authentication.views.id_token.verify_oauth2_token")
+def test_google_login_returns_jwt_tokens(mock_verify):
+    client = APIClient()
+
+    # Simular respuesta de Google
+    mock_verify.return_value = {
+        "email": "tokenuser@gmail.com",
+        "name": "Token User",
+        "picture": "https://avatars.com/token.jpg",
+        "sub": "google-oauth2|987654321"
+    }
+
+    payload = {
+        "id_token": "fake-google-token"
+    }
+
+    response = client.post("/api/auth/google/", data=payload)
+
+    assert response.status_code == 200
+    data = response.data
+
+    # Validar datos de usuario
+    assert data["email"] == "tokenuser@gmail.com"
+    assert data["username"] == "Token User"
+    assert "tokens" in data
+    assert "access" in data["tokens"]
+    assert "refresh" in data["tokens"]
+
+    # Validar formato JWT (tienen 3 partes separadas por puntos)
+    assert data["tokens"]["access"].count(".") == 2
+    assert data["tokens"]["refresh"].count(".") == 2
