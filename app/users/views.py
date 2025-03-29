@@ -1,9 +1,10 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .serializers import UserProfileSerializer, UserProfileUpdateSerializer, UserListSerializer
+from .serializers import UserProfileSerializer, UserProfileUpdateSerializer, UserListSerializer, AchievementSerializer
 from rest_framework import status
-from .models import UserProfile
+from .models import UserProfile, Achievement
 
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
@@ -30,3 +31,8 @@ class UserListView(APIView):
         users = UserProfile.objects.all()
         serializer = UserListSerializer(users, many=True)
         return Response(serializer.data)
+    
+class AchievementListView(ListAPIView):
+    queryset = Achievement.objects.all()
+    serializer_class = AchievementSerializer
+    permission_classes = []  # Pública

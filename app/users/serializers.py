@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile
+from .models import UserProfile, UserAchievement, Achievement
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +16,32 @@ class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['id', 'username', 'email', 'points']
+
+class UserAchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAchievement
+        fields = ['achievement', 'unlocked_at']
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    achievements = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'email', 'points', 'achievements']
+
+    def get_achievements(self, obj):
+        return [
+            {
+                "name": ua.achievement.name,
+                "description": ua.achievement.description,
+                "image_url": ua.achievement.image_url,
+                "unlocked_at": ua.unlocked_at
+            }
+            for ua in obj.user_achievements.all()
+        ]
+    
+class AchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achievement
+        fields = ['name', 'description', 'points_required', 'image_url']
 
