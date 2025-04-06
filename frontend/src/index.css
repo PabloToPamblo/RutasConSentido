@@ -1,0 +1,42 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f9f9f9; /* Fondo cálido */
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333; /* Gris oscuro bonito */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Links limpios */
+a {
+  color: #4dabf7;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+a:hover {
+  color: #339af0;
+}
+
+/* Botones */
+button {
+  border-radius: 8px;
+  border: 1px solid #4dabf7;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: #ffffff;
+  color: #4dabf7;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: #4dabf7;
+  color: #ffffff;
+}
