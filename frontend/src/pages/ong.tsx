@@ -103,7 +103,19 @@ const Ong: React.FC = () => {
 
       <div
         className="container min-vh-100 d-flex flex-column align-items-center justify-content-start pt-5"
-        style={{ marginTop: "80px" }}
+        style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "70px",
+            backgroundImage: `url('/images/background.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            padding: "40px 20px",
+            minHeight: "calc(100vh - 70px)",
+          }}
       >
         <div
           className="card shadow p-5"

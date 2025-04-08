@@ -1,11 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useGoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
+import api from "../services/api";
 
 const About: React.FC = () => {
+
+    const navigate = useNavigate(); // Hook de react-router-dom para redireccionar
+
+    const login = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+            const accessToken = tokenResponse.access_token;
+            console.log("Access Token:", accessToken);
+    
+            const response = await api.post("/auth/google/", { access_token: accessToken });
+    
+            localStorage.setItem("access_token", response.data.tokens.access);
+            localStorage.setItem("refresh_token", response.data.tokens.refresh);
+    
+            navigate("/profile");
+            } catch (error) {
+            console.error("Login failed", error);
+            }
+        },
+        onError: () => {
+            console.error('Login Failed');
+        },
+        });
+
   return (
     <div
       className="container min-vh-100 d-flex flex-column align-items-center justify-content-start pt-5"
-      style={{ marginTop: "80px" }}
+      style={{
+        flex: 1,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "70px",
+        backgroundImage: `url('/images/background.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        padding: "40px 20px",
+        minHeight: "calc(100vh - 70px)",
+      }}
     >
               
       {/* NAVBAR */}
@@ -32,31 +71,25 @@ const About: React.FC = () => {
           <div style={{ display: "flex", gap: "30px", alignItems: "center" }}>
             <Link to="/about" className="nav-link">Sobre Nosotros</Link> {/* 👈 Nuevo enlace */}
             <Link to="/ong" className="nav-link">ONG</Link> {/* 👈 Nuevo enlace */}
-            <a
-              href="#login"
-              style={{
+            {/* LOGIN BUTTON WITH GOOGLE */}
+            <button
+            onClick={() => login()}
+            style={{
+                backgroundColor: "#D88C7B",   // Tu color corporativo
+                color: "#ffffff",
+                border: "none",
                 padding: "8px 16px",
-                border: "1px solid #D88C7B",
-                borderRadius: "6px",
-                background: "transparent",
-                color: "#D88C7B",
+                borderRadius: "8px",
                 fontSize: "16px",
-                textDecoration: "none",
-                transition: "background-color 0.3s, color 0.3s",
-              }}
-              onMouseEnter={(e) => {
-                const target = e.currentTarget;
-                target.style.backgroundColor = "#ffffff";
-                target.style.color = "#D88C7B";
-              }}
-              onMouseLeave={(e) => {
-                const target = e.currentTarget;
-                target.style.backgroundColor = "transparent";
-                target.style.color = "#D88C7B";
-              }}
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+            }}
             >
-              Login
-            </a>
+            {/* Puedes incluir aquí un icono pequeño si quieres */}
+            LogIn
+            </button>
           </div>
         </div>
       </nav>
