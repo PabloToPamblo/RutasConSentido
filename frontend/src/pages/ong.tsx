@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { GoogleLogin } from '@react-oauth/google';
 import api from "../services/api";
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -8,14 +7,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 const Ong: React.FC = () => {
 
     const navigate = useNavigate(); // Hook de react-router-dom para redireccionar
-
-    interface TokenResponse {
-        access_token: string;
-        expires_in: number;
-        scope: string;
-        token_type: string;
-        state?: string;
-      }
 
     const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -37,20 +28,6 @@ const Ong: React.FC = () => {
         console.error('Login Failed');
     },
     });
-
-    const handleLoginSuccess = async (credentialResponse: any) => {
-      try {
-        const idToken = credentialResponse.credential;
-        const response = await api.post("/auth/google/", { id_token: idToken });
-  
-        localStorage.setItem("access_token", response.data.tokens.access);
-        localStorage.setItem("refresh_token", response.data.tokens.refresh);
-  
-        navigate("/profile");
-      } catch (error) {
-        console.error("Login failed", error);
-      }
-    };
 
   return (
     <>
