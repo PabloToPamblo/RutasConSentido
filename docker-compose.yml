@@ -24,3 +24,19 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
+
+  jenkins:
+    image: pamblo/jenkins-with-docker:latest
+    user: root  # Un poco inseguro, lo apuntamos
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    container_name: jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # MONTAR DOCKER SOCKET Y CONTROLAR SERVER
+    privileged: true  # NECESARIO para poder usar Docker dentro ADMIN CONTROL
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
