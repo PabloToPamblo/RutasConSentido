@@ -29,8 +29,6 @@ services:
     privileged: true
     environment:
       - DOCKER_TLS_CERTDIR=
-    ports:
-      - "2375:2375"  # Exponer Docker Engine por TCP sin TLS (solo para local)
     restart: unless-stopped
 
   jenkins:
