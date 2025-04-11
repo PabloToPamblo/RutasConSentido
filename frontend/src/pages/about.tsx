@@ -1,34 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useGoogleLogin } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
-import api from "../services/api";
+import Navbar from "../components/navbar";
 
 const About: React.FC = () => {
-
-    const navigate = useNavigate(); // Hook de react-router-dom para redireccionar
-
-    const login = useGoogleLogin({
-        onSuccess: async (tokenResponse) => {
-            try {
-            const accessToken = tokenResponse.access_token;
-            console.log("Access Token:", accessToken);
-    
-            const response = await api.post("/auth/google/", { access_token: accessToken });
-    
-            localStorage.setItem("access_token", response.data.tokens.access);
-            localStorage.setItem("refresh_token", response.data.tokens.refresh);
-    
-            navigate("/profile");
-            } catch (error) {
-            console.error("Login failed", error);
-            }
-        },
-        onError: () => {
-            console.error('Login Failed');
-        },
-        });
-
   return (
     <div
       className="container min-vh-100 d-flex flex-column align-items-center justify-content-start pt-5"
@@ -38,7 +11,7 @@ const About: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "70px",
-        backgroundImage: `url('/images/background.jpg')`,
+        backgroundImage: `url('/images/background.jpg')`, // Tu imagen de fondo
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -46,83 +19,101 @@ const About: React.FC = () => {
         minHeight: "calc(100vh - 70px)",
       }}
     >
-              
-      {/* NAVBAR */}
-      <nav
-        style={{
-          height: "70px",
-          width: "100%",
-          backgroundColor: "#ffffff",
-          color: "#D88C7B",
-          display: "flex",
-          alignItems: "center",
-          padding: "0 40px",
-          borderBottom: "1px solid #ddd",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 1000,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-          
-          <Link to="/" className="nav-link">RUTASCONSENTIDO</Link> {/* 👈 Nuevo enlace */}
-
-          <div style={{ display: "flex", gap: "30px", alignItems: "center" }}>
-            <Link to="/about" className="nav-link">Sobre Nosotros</Link> {/* 👈 Nuevo enlace */}
-            <Link to="/ong" className="nav-link">ONG</Link> {/* 👈 Nuevo enlace */}
-            {/* LOGIN BUTTON WITH GOOGLE */}
-            <button
-            onClick={() => login()}
-            style={{
-                backgroundColor: "#D88C7B",   // Tu color corporativo
-                color: "#ffffff",
-                border: "none",
-                padding: "8px 16px",
-                borderRadius: "8px",
-                fontSize: "16px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-            }}
-            >
-            {/* Puedes incluir aquí un icono pequeño si quieres */}
-            LogIn
-            </button>
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
 
       <div className="card shadow p-5" style={{ maxWidth: "800px", width: "100%", backgroundColor: "#ffffff", borderRadius: "12px" }}>
         <div className="card-body text-center">
-          <h1 className="mb-4" style={{ color: "#D88C7B" }}>Sobre RutasConSentido</h1>
+          <h1
+            className="mb-4 d-flex align-items-center justify-content-center"
+            style={{
+              color: "#D88C7B",
+              fontWeight: "bold",
+              fontSize: "36px",
+              letterSpacing: "1px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+            }}
+          >
+            <span role="img" aria-label="Earth" style={{ fontSize: "40px" }}>
+              🌍
+            </span>
+            Sobre RutasConSentido
+          </h1>
 
-          <p style={{ fontSize: "18px", color: "#333" }}>
-            <strong>RutasConSentido</strong> nace de una idea simple pero poderosa: <br />
-            viajar por el mundo, conectar con comunidades locales y crear un impacto positivo real.
-          </p>
+          {/* Cada párrafo en una tarjeta */}
+          <div
+            style={{
+              backgroundColor: "#f9f9f9",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+              marginBottom: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "24px" }}>✈️</span>
+            <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+              <strong>RutasConSentido</strong> nace de una idea simple pero poderosa: viajar por el mundo, conectar con comunidades locales y crear un impacto positivo real.
+            </p>
+          </div>
 
-          <p style={{ fontSize: "18px", color: "#333" }}>
-            Cada vídeo que ves, cada "me gusta" que das y cada vez que compartes,
-            estás contribuyendo directamente a ayudar a personas reales y a apoyar causas reales en todo el mundo.
-          </p>
+          <div
+            style={{
+              backgroundColor: "#f9f9f9",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+              marginBottom: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "24px" }}>👍</span>
+            <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+              Cada vídeo que ves, cada "me gusta" que das y cada vez que compartes estás contribuyendo directamente a ayudar a personas reales y a apoyar causas reales en todo el mundo.
+            </p>
+          </div>
 
-          <p style={{ fontSize: "18px", color: "#333" }}>
-            Nuestra misión es construir una cadena global de favores, donde pequeñas acciones
-            se transforman en grandes cambios. Al participar, no solo eres un espectador, sino
-            que formas parte de un movimiento que busca hacer del mundo un lugar mejor, una historia a la vez.
-          </p>
+          <div
+            style={{
+              backgroundColor: "#f9f9f9",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+              marginBottom: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "24px" }}>🤝</span>
+            <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+              Nuestra misión es construir una cadena global de favores, donde pequeñas acciones se transforman en grandes cambios. 
+              Al participar, no solo eres un espectador, sino que formas parte de un movimiento que busca hacer del mundo un lugar mejor, una historia a la vez.
+            </p>
+          </div>
 
-          <p style={{ fontSize: "18px", color: "#333" }}>
-            Juntos, convertimos cada ruta en un viaje con sentido.
-          </p>
-
-          <div className="mt-4">
-            <a href="#contact" className="btn btn-outline-primary">
-              📬 Contáctanos
-            </a>
+          <div
+            style={{
+              backgroundColor: "#f9f9f9",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+              marginBottom: "30px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "24px" }}>🌟</span>
+            <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+              Juntos, convertimos cada ruta en un viaje con sentido.
+            </p>
           </div>
         </div>
       </div>

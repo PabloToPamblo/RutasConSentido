@@ -61,6 +61,12 @@ ROOT_URLCONF = 'app.urls'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+    "http://localhost:5176",
+    "http://localhost:5177",
+    "http://localhost:5178",
+    "http://localhost:5179",
 ]
 
 TEMPLATES = [
@@ -93,6 +99,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'AUTH_HEADER_TYPES': ('Bearer',),
+    "LEEWAY": 5,  # 5 segundos de margen para tokens
 }
 
 # Database
@@ -146,3 +153,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Agregamos BaseDIR para nuestras imagenes en los Logros Achievements
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

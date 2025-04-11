@@ -7,7 +7,6 @@ from django.contrib.auth import get_user_model
 from google.auth.exceptions import GoogleAuthError
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 User = get_user_model()
 
 def get_tokens_for_user(user):
@@ -18,44 +17,29 @@ def get_tokens_for_user(user):
     }
 
 class GoogleAuthView(APIView):
-
     def post(self, request):
-        token = request.data.get("id_token")
+        id_token_value = request.data.get('id_token')
 
-        if not token:
-            return Response({"detail": "Missing id_token"}, status=status.HTTP_400_BAD_REQUEST)
+        if not id_token_value:
+            return Response({'error': 'ID token is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            idinfo = id_token.verify_oauth2_token(token, requests.Request())
+            idinfo = id_token.verify_oauth2_token(id_token_value, requests.Request())
 
-            # Extraer datos desde Google
-            email = idinfo["email"]
-            username = idinfo.get("name", email.split("@")[0])
-            avatar = idinfo.get("picture", "")
-            google_id = idinfo.get("sub")
+            email = idinfo.get('email')
+            name = idinfo.get('name')
+            sub = idinfo.get('sub')  # Google user ID
 
-            # Buscar o crear el usuario
-            user, created = User.objects.get_or_create(email=email, defaults={
-                "username": username,
-                "avatar_url": avatar,
-                "google_id": google_id,
-            })
+            user, created = User.objects.get_or_create(email=email, defaults={'username': name})
 
-            # Actualizar avatar si ha cambiado
-            if not created and user.avatar_url != avatar:
-                user.avatar_url = avatar
-                user.save()
-
-            tokens = get_tokens_for_user(user)
+            refresh = RefreshToken.for_user(user)
 
             return Response({
-                "message": "User authenticated",
-                "username": user.username,
-                "email": user.email,
-                "avatar": user.avatar_url,
-                "google_id": user.google_id,
-                "tokens": tokens
-                }, status=status.HTTP_200_OK)
+                'tokens': {
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh),
+                }
+            })
 
-        except (ValueError, GoogleAuthError):
-            return Response({"error": "Invalid token"}, status=400)
+        except ValueError as e:
+            return Response({'error': 'Invalid ID token'}, status=status.HTTP_400_BAD_REQUEST)
