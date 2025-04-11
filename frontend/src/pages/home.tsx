@@ -1,98 +1,11 @@
 import React from "react";
-import { GoogleLogin } from '@react-oauth/google';
-import api from "../services/api";
-import { useNavigate } from 'react-router-dom';
-import { Link } from "react-router-dom";
-import { useGoogleLogin } from '@react-oauth/google';
+import Navbar from "../components/navbar";
 
 const Home: React.FC = () => {
-  const navigate = useNavigate(); // Hook de react-router-dom para redireccionar
   
-  const handleLoginSuccess = async (credentialResponse: any) => {
-    try {
-      const idToken = credentialResponse.credential;
-      const response = await api.post("/auth/google/", { id_token: idToken });
-
-      localStorage.setItem("access_token", response.data.tokens.access);
-      localStorage.setItem("refresh_token", response.data.tokens.refresh);
-
-      navigate("/profile");
-    } catch (error) {
-      console.error("Login failed", error);
-    }
-  };
-
-  const login = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-        try {
-        const accessToken = tokenResponse.access_token;
-        console.log("Access Token:", accessToken);
-
-        const response = await api.post("/auth/google/", { access_token: accessToken });
-
-        localStorage.setItem("access_token", response.data.tokens.access);
-        localStorage.setItem("refresh_token", response.data.tokens.refresh);
-
-        navigate("/profile");
-        } catch (error) {
-        console.error("Login failed", error);
-        }
-    },
-    onError: () => {
-        console.error('Login Failed');
-    },
-    });
-
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      
-      {/* NAVBAR */}
-      <nav
-        style={{
-          height: "70px",
-          width: "100%",
-          backgroundColor: "#ffffff",
-          color: "#D88C7B",
-          display: "flex",
-          alignItems: "center",
-          padding: "0 40px",
-          borderBottom: "1px solid #ddd",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 1000,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-          
-          <Link to="/" className="nav-link">RUTASCONSENTIDO</Link> {/* 👈 Nuevo enlace */}
-
-          <div style={{ display: "flex", gap: "30px", alignItems: "center" }}>
-            <Link to="/about" className="nav-link">Sobre Nosotros</Link> {/* 👈 Nuevo enlace */}
-            <Link to="/ong" className="nav-link">ONG</Link> {/* 👈 Nuevo enlace */}
-            {/* LOGIN BUTTON WITH GOOGLE */}
-            <button
-            onClick={() => login()}
-            style={{
-                backgroundColor: "#D88C7B",   // Tu color corporativo
-                color: "#ffffff",
-                border: "none",
-                padding: "8px 16px",
-                borderRadius: "8px",
-                fontSize: "16px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-            }}
-            >
-            {/* Puedes incluir aquí un icono pequeño si quieres */}
-            LogIn
-            </button>
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
       {/* CONTENIDO */}
       <div
         id="login"
@@ -172,18 +85,88 @@ const Home: React.FC = () => {
               gap: "20px",
             }}
           >
-            <p style={{ fontSize: "22px", color: "#333", maxWidth: "400px" }}>
-              Cada pequeño gesto construye un mundo mejor. CANJEA tus logros, COMPÁRTELOS y ÚNETE a la cadena de favores.
-            </p>
-
-            {/* LOGIN BUTTON WITH GOOGLE */}
-            <div className="container text-center mt-5">
-            <div className="d-flex justify-content-center mt4">
-                <GoogleLogin
-                onSuccess={handleLoginSuccess}
-                onError={() => console.log('Login Failed')}
-                />
+            <div
+              style={{
+                backgroundColor: "#f9f9f9",
+                padding: "15px 20px",
+                borderRadius: "12px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                transition: "all 0.3s ease",
+                maxWidth: "400px",
+                width: "100%",
+                cursor: "default",
+              }}
+            >
+              <span style={{ fontSize: "24px" }}>🌟</span>
+              <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+                Cada pequeño gesto construye un mundo mejor
+              </p>
             </div>
+
+            <div
+              style={{
+                backgroundColor: "#f9f9f9",
+                padding: "15px 20px",
+                borderRadius: "12px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                transition: "all 0.3s ease",
+                maxWidth: "400px",
+                width: "100%",
+                cursor: "default",
+              }}
+            >
+              <span style={{ fontSize: "24px" }}>🔑</span>
+              <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+                1- INICIA SESIÓN CON GOOGLE
+              </p>
+            </div>
+
+            <div
+              style={{
+                backgroundColor: "#f9f9f9",
+                padding: "15px 20px",
+                borderRadius: "12px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                transition: "all 0.3s ease",
+                maxWidth: "400px",
+                width: "100%",
+                cursor: "default",
+              }}
+            >
+              <span style={{ fontSize: "24px" }}>🏆</span>
+              <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+                2- REVISA TUS PUNTOS Y LOGROS EN TU PERFIL
+              </p>
+            </div>
+
+            <div
+              style={{
+                backgroundColor: "#f9f9f9",
+                padding: "15px 20px",
+                borderRadius: "12px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                transition: "all 0.3s ease",
+                maxWidth: "400px",
+                width: "100%",
+                cursor: "default",
+              }}
+            >
+              <span style={{ fontSize: "24px" }}>📸</span>
+              <p style={{ fontSize: "18px", color: "#555", margin: 0 }}>
+                3- COMPÁRTELO EN INSTAGRAM
+              </p>
             </div>
           </div>
         </div>

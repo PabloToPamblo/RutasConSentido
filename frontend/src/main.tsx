@@ -1,15 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
+import './index.css'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import { AuthProvider } from './context/AuthContext.tsx' 
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <GoogleOAuthProvider clientId="738178788998-inb3m5k3thlmv0e0nj60phvdghuo7bbm.apps.googleusercontent.com">
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </GoogleOAuthProvider>
-  </StrictMode>,
+  </React.StrictMode>,
 )

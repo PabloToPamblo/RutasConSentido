@@ -83,10 +83,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points, achi
           </button>
         </div>
 
-        <h4 style={{ marginTop: "40px" }}>Your Achievements</h4>
+        <h4 style={{ marginTop: "40px" }}>TUS LOGROS</h4>
 
         {achievements.length === 0 ? (
-          <p>No achievements unlocked yet 😅</p>
+          <p>Consigue puntos para desbloquear logros</p>
         ) : (
           <div style={{ marginTop: "20px" }}>
             {achievements.map((ach, idx) => (
