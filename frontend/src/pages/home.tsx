@@ -1,5 +1,4 @@
 import React from "react";
-import { GoogleLogin } from '@react-oauth/google';
 import Navbar from "../components/navbar";
 
 const Home: React.FC = () => {
