@@ -85,6 +85,24 @@ const Navbar: React.FC = () => {
           >
             ❤️ ONG
           </Link>
+          <Link
+            to="/achievements"
+            style={{
+              backgroundColor: "#D88C7B",
+              color: "#ffffff",
+              border: "none",
+              padding: "8px 16px",
+              borderRadius: "8px",
+              fontSize: "16px",
+              cursor: "pointer",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            🏆 Logros
+          </Link>
 
           {isAuthenticated ? (
             <>
