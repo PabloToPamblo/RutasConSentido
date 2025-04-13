@@ -32,7 +32,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def get_achievements(self, obj):
         return [
             {
-                "name": ua.achievement.name,
+                "title": ua.achievement.title,
                 "description": ua.achievement.description,
                 "image_url": ua.achievement.image_url,
                 "unlocked_at": ua.unlocked_at
@@ -43,5 +43,5 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ['name', 'description', 'points_required', 'image_url']
+        fields = ['id', 'title', 'description', 'points', 'image']
 

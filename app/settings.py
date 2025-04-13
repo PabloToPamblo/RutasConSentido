@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'app.users',
     'rest_framework',
     'corsheaders',
+    'storages',
+    'app.Achievements',
 ]
 
 AUTH_USER_MODEL = 'users.UserProfile'
@@ -154,7 +157,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Agregamos BaseDIR para nuestras imagenes en los Logros Achievements
+# IMPORTAMOS BUCKET DE AMAZON CON IMAGENES
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', default='')
+AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', default='')
+
+# Configurar storage por defecto
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Para usar el dominio correcto en las URLs
+MEDIA_URL = f'https://rutasconsentido-achievements.s3.amazonaws.com/'
