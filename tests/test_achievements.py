@@ -32,7 +32,6 @@ def test_user_can_unlock_achievement():
     assert unlock.user == user
     assert unlock.achievement == achievement
     assert unlock.unlocked_at is not None
-
 """
 """
 @pytest.mark.django_db
