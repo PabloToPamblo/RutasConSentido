@@ -107,6 +107,24 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             <>
               <Link
+                to="/reclamar"
+                style={{
+                  backgroundColor: "#D88C7B",
+                  color: "#ffffff",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                🎁 Reclamar
+              </Link>
+              <Link
                 to="/profile"
                 style={{
                   backgroundColor: "#D88C7B",
