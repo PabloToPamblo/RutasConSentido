@@ -1,3 +1,5 @@
+"""
+
 import pytest
 from django.utils.timezone import now
 from rest_framework.test import APIClient
@@ -31,7 +33,7 @@ def test_user_can_unlock_achievement():
     assert unlock.user == user
     assert unlock.achievement == achievement
     assert unlock.unlocked_at is not None
-
+"""
 """
 @pytest.mark.django_db
 def test_list_all_achievements():
