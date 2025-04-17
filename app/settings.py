@@ -114,7 +114,7 @@ DATABASES = {
         'NAME': config('POSTGRES_DB', default='rutas_db'),
         'USER': config('POSTGRES_USER', default='pablo'),
         'PASSWORD': config('POSTGRES_PASSWORD', default='supersegura123'),
-        'HOST': 'db',
+        'HOST': config('POSTGRES_HOST', default='localhost'),
         'PORT': '5432',
     }
 }
