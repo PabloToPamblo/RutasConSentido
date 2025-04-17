@@ -48,7 +48,7 @@ Every **Monday**, I’ll post updates on:
 - 💛 How it contributes to the mission
 
 Follow the journey, learn with me, and see how one project can turn intention into impact.
-
+LOVE2
 ---
 
 ## 🤝 Want to Help?

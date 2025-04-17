@@ -14,7 +14,7 @@ const Ong: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: "70px",
-            backgroundImage: `url('/images/background.jpg')`,
+   backgroundImage: `url('/images/background.jpg')`,         
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",

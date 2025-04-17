@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile, UserAchievement, Achievement
+from .models import UserProfile, UserAchievement, Achievement, Video, VideoAction
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,4 +44,20 @@ class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
         fields = ['id', 'title', 'description', 'points', 'image']
+
+class VideoActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VideoAction
+        fields = ('id', 'action_name', 'points')
+
+class VideoSerializer(serializers.ModelSerializer):
+    actions = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Video
+        fields = ('id', 'title', 'youtube_url', 'thumbnail_url', 'created_at', 'actions')
+
+    def get_actions(self, obj):
+        actions = VideoAction.objects.filter(video=obj)
+        return VideoActionSerializer(actions, many=True).data
 
