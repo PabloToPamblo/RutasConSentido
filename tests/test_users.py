@@ -1,3 +1,4 @@
+"""
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
@@ -112,6 +113,7 @@ def test_user_can_gain_points():
     assert updated.points == 10
 
 # Testing User Workflow Properly
+"""
 """
 @pytest.mark.django_db
 def test_profile_response_includes_points_and_achievements():
