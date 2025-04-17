@@ -111,9 +111,9 @@ SIMPLE_JWT = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB', default='rutas_db'),
+        'NAME': config('POSTGRES_DB', default='helppeople'),
         'USER': config('POSTGRES_USER', default='pablo'),
-        'PASSWORD': config('POSTGRES_PASSWORD', default='supersegura123'),
+        'PASSWORD': config('POSTGRES_PASSWORD', default='changeme'),
         'HOST': config('POSTGRES_HOST', default='localhost'),
         'PORT': '5432',
     }
