@@ -4,7 +4,7 @@
 It’s a movement — built with love, logic, and the belief that **technology can change lives**.
 
 This project is inspired by my journey documenting stories from people in need around the world through my [YouTube channel](https://www.youtube.com/@RutasConSentido). Every line of code written here is meant to **create real, measurable, positive impact** — not in theory, but in action.
-
+LOVE
 ---
 
 ## 🎯 What Are We Building?
