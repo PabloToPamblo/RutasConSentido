@@ -1,7 +1,9 @@
 import React from "react";
 import Navbar from "../components/navbar";
+import { useMediaQuery } from "react-responsive";
 
 const Home: React.FC = () => {
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -24,22 +26,22 @@ const Home: React.FC = () => {
         }}
       >
         {/* WRAPPER */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            maxWidth: "1200px",
-            width: "100%",
-            height: "100%",
-            gap: "50px",
-            backgroundColor: "#ffffff",
-            borderRadius: "12px",
-            padding: "20px",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-          }}
-        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: "center",
+              justifyContent: "center",
+              maxWidth: "1200px",
+              width: "100%",
+              height: "100%",
+              gap: "50px",
+              backgroundColor: "#ffffff",
+              borderRadius: "12px",
+              padding: "20px",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+            }}
+          >
           {/* VÍDEO */}
           <div
             style={{
@@ -63,15 +65,17 @@ const Home: React.FC = () => {
           </div>
 
           {/* SEPARADOR */}
-          <div
-            style={{
+          {!isMobile && (
+            <div
+              style={{
                 width: "1px",
                 height: "80%",
                 minHeight: "150px",
                 backgroundColor: "black",
                 opacity: 0.2,
-            }}
-          ></div>
+              }}
+            ></div>
+          )}
 
           {/* TEXTO Y BOTÓN */}
           <div

@@ -5,6 +5,7 @@ import Navbar from "../components/navbar";
 
 // Swiper imports
 import { Navigation, Pagination, Autoplay, Grid } from "swiper/modules";
+import { useMediaQuery } from "react-responsive";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -24,6 +25,7 @@ const Achievements: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const handleShowModal = (achievement: Achievement) => {
     setSelectedAchievement(achievement);
@@ -97,7 +99,7 @@ const Achievements: React.FC = () => {
               maxWidth: "1200px",
               display: "flex",
               justifyContent: "center",
-              marginLeft: "100px"
+              padding: "0 20px"
             }}
           >
             <Swiper
@@ -114,17 +116,22 @@ const Achievements: React.FC = () => {
               loop={false}
               breakpoints={{
                 320: { slidesPerView: 1, grid: { rows: 1 } },
-                576: { slidesPerView: 2, grid: { rows: 2 } },
-                768: { slidesPerView: 3, grid: { rows: 2 } },
+                576: { slidesPerView: 1, grid: { rows: 1 } },
+                768: { slidesPerView: 1, grid: { rows: 1 } },
                 992: { slidesPerView: 4, grid: { rows: 2 } },
                 1200: { slidesPerView: 5, grid: { rows: 2 } },
               }}
             >
               {achievements.map((achievement) => (
                 <SwiperSlide key={achievement.id}>
-                  <div
+              <div
                     className="card shadow-sm mx-auto"
-                    style={{ width: "180px", height: "250px", cursor: "pointer" }}
+                    style={{
+                      width: "180px",
+                      height: "250px",
+                      cursor: "pointer",
+                      margin: isMobile ? "0 auto" : undefined,
+                    }}
                     onClick={() => handleShowModal(achievement)}
                   >
                     <div className="card-header bg-white text-center p-1">
