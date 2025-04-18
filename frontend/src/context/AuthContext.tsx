@@ -47,6 +47,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = () => {
     setIsAuthenticated(true);
+    api.get("/users/profile/")
+      .then(res => setUser(res.data))
+      .catch(() => setUser(null));
   };
 
   const logout = () => {
