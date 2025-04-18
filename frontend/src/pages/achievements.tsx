@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import axios from "axios";
 import Navbar from "../components/navbar";
 
@@ -21,6 +22,13 @@ interface Achievement {
 const Achievements: React.FC = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = (achievement: Achievement) => {
+    setSelectedAchievement(achievement);
+    setShowModal(true);
+  };
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/achievements/")
@@ -114,7 +122,14 @@ const Achievements: React.FC = () => {
             >
               {achievements.map((achievement) => (
                 <SwiperSlide key={achievement.id}>
-                  <div className="card shadow-sm mx-auto" style={{ width: "180px", height: "250px" }}>
+                  <div
+                    className="card shadow-sm mx-auto"
+                    style={{ width: "180px", height: "250px", cursor: "pointer" }}
+                    onClick={() => handleShowModal(achievement)}
+                  >
+                    <div className="card-header bg-white text-center p-1">
+                      <strong className="small">{achievement.title}</strong>
+                    </div>
                     <img
                       src={achievement.image}
                       className="card-img-top"
@@ -131,8 +146,27 @@ const Achievements: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
-  );
+          <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+            <Modal.Body style={{ backgroundColor: "#f8f9fa", borderRadius: "8px", padding: "20px", textAlign: "center", marginBottom: "50px" }}>
+              {selectedAchievement && (
+                <div className="d-flex flex-column align-items-center justify-content-center text-center">
+                  <img
+                    src={selectedAchievement.image}
+                    alt={selectedAchievement.title}
+                    className="img-fluid mb-3"
+                    style={{ maxHeight: "300px", borderRadius: "10px", objectFit: "contain" }}
+                  />
+                  <h5 className="mb-2">{selectedAchievement.title}</h5>
+                  <p className="text-muted mb-4">{selectedAchievement.points} puntos</p>
+                  <button className="btn btn-outline-secondary" onClick={() => setShowModal(false)}>
+                    Volver atrás
+                  </button>
+                </div>
+              )}
+            </Modal.Body>
+          </Modal>
+        </>
+      );
 };
 
 export default Achievements;

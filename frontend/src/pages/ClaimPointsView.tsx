@@ -35,8 +35,10 @@ const ClaimPointsView = () => {
       }
     };
 
-    fetchVideos();
-  }, []);
+    if (user) {
+      fetchVideos();
+    }
+  }, [user]);
 
   const handleAction = async (videoId: number, actionId: number) => {
     try {
