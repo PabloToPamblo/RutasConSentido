@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface Achievement {
   name: string;
   description: string;
-  image_url: string;
+  image: string;
+  points: number;
 }
 
 interface ProfileCardProps {
   username: string;
   email: string;
   points: number;
-  achievements: Achievement[];
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points, achievements }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points }) => {
+  const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
+  
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/achievements/");
+        const data = await response.json();
+        setAllAchievements(data);
+      } catch (error) {
+        console.error("Error fetching achievements:", error);
+      }
+    };
+    fetchAchievements();
+  }, []);
+
+  const unlockedAchievements = allAchievements.filter((ach) => points >= ach.points);
+
   return (
     <div style={{
       height: "100vh",
@@ -22,7 +39,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points, achi
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "#f8f9fa",
-      padding: "20px"
+      padding: "20px",
+      marginTop: "100px"
     }}>
       <div style={{
         background: "white",
@@ -33,10 +51,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points, achi
         maxWidth: "500px",
         textAlign: "center",
       }}>
-        <h2>Welcome, {username}!</h2>
-        <h6 style={{ color: "gray" }}>{email}</h6>
+        <h2>Te quiero, {username}!</h2>
 
-        {/* 🔥 Aquí el color de los puntos cambia dinámicamente */}
+        {/* Aquí el color de los puntos cambia dinámicamente */}
         <div style={{
           marginTop: "20px",
           fontSize: "18px",
@@ -45,64 +62,53 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points, achi
         }}>
           Points: {points}
         </div>
-
-        {/* 🔥 Botón con efecto hover */}
-        <div style={{ marginTop: "30px" }}>
-          <button
-            style={{
-              padding: "10px 20px",
-              border: "1px solid #007bff",
-              borderRadius: "6px",
-              background: "white",
-              color: "#007bff",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              margin: "0 auto",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              const target = e.currentTarget;
-              target.style.backgroundColor = "#007bff";
-              target.style.color = "white";
-            }}
-            onMouseLeave={(e) => {
-              const target = e.currentTarget;
-              target.style.backgroundColor = "white";
-              target.style.color = "#007bff";
-            }}
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-              alt="Instagram"
-              width="24"
-              height="24"
-            />
-            Share on Instagram
-          </button>
-        </div>
-
+        
         <h4 style={{ marginTop: "40px" }}>TUS LOGROS</h4>
 
-        {achievements.length === 0 ? (
+        {unlockedAchievements.length === 0 ? (
           <p>Consigue puntos para desbloquear logros</p>
         ) : (
-          <div style={{ marginTop: "20px" }}>
-            {achievements.map((ach, idx) => (
+          <div style={{
+            marginTop: "20px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "20px",
+            maxHeight: "400px",
+            overflowY: "auto",
+          }}>
+            {unlockedAchievements.map((ach, idx) => (
               <div key={idx} style={{
-                marginBottom: "20px",
                 border: "1px solid #ddd",
                 padding: "10px",
-                borderRadius: "8px"
+                borderRadius: "8px",
+                backgroundColor: "#fdfdfd",
+                textAlign: "center",
               }}>
                 <img
-                  src={ach.image_url}
+                  src={ach.image}
                   alt={ach.name}
                   style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "6px" }}
                 />
                 <h5 style={{ marginTop: "10px" }}>{ach.name}</h5>
                 <p>{ach.description}</p>
+                <a
+                  href={ach.image}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    marginTop: "10px",
+                    padding: "6px 12px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    borderRadius: "4px",
+                    textDecoration: "none",
+                    fontSize: "14px"
+                  }}
+                >
+                  📥 Descargar
+                </a>
               </div>
             ))}
           </div>
