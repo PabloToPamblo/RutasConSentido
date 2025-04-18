@@ -13,7 +13,7 @@ interface ProfileCardProps {
   points: number;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ username, email, points }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ username, points }) => {
   const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
   
   useEffect(() => {
