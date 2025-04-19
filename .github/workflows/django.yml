@@ -10,14 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      POSTGRES_DB: helppeople
+      POSTGRES_USER: pablo
+      POSTGRES_PASSWORD: changeme
+      DB_HOST: localhost
+      DB_PORT: 5432
+
     services:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          DB_HOST: db
+          POSTGRES_DB: helppeople
+          POSTGRES_USER: pablo
+          POSTGRES_PASSWORD: changeme
         ports:
           - 5432:5432
         options: >-
@@ -27,21 +33,23 @@ jobs:
           --health-retries 5
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run migrations
-      run: python manage.py migrate
+      - name: Run migrations
+        run: |
+          python manage.py migrate
 
-    - name: Run Django Tests
-      run: pytest
+      - name: Run tests
+        run: |
+          python manage.py test
