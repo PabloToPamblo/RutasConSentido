@@ -10,3 +10,7 @@ db.sqlite3
 
 # Temporals of coverage APP
 .coverage
+
+# PemDeEC2 not uploaded on Github
+RutasConSentidoEC2.pem
+
