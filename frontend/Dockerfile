@@ -1,8 +1,14 @@
-# Dockerfile para React (Vite o CRA)
-FROM node:18
+# frontend/Dockerfile
+FROM node:18-alpine as build
 
-WORKDIR /appFrontEnd
+WORKDIR /app
 COPY . .
 
 RUN npm install
-CMD ["npm", "run", "dev"]
+RUN npm run build
+
+# Fase de producción
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
