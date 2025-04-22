@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: window.location.origin + '/api',
 });
 
 // Este interceptor agrega el token dinámicamente en CADA request
@@ -29,7 +29,7 @@ api.interceptors.response.use(
       
       try {
         const refreshToken = localStorage.getItem('refresh_token');
-        const res = await axios.post('http://localhost:8000/api/auth/token/refresh/', { refresh: refreshToken });
+        const res = await axios.post('/auth/token/refresh/', { refresh: refreshToken });
         
         const newAccessToken = res.data.access;
         localStorage.setItem('access_token', newAccessToken);

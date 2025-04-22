@@ -33,7 +33,7 @@ const Achievements: React.FC = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/achievements/")
+    axios.get("/achievements/")
       .then((response) => {
         setAchievements(response.data);
         setLoading(false);

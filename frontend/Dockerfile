@@ -1,14 +1,8 @@
-# frontend/Dockerfile
-FROM node:18-alpine as build
-
+# Etapa de construcción
+FROM node:20-alpine AS build
 WORKDIR /app
 COPY . .
-
 RUN npm install
+RUN npm install -g typescript
 RUN npm run build
 
-# Fase de producción
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
