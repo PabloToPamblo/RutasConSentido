@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import axios from "axios";
+import api from "../services/api";
 import Navbar from "../components/navbar";
 
 // Swiper imports
@@ -33,7 +33,7 @@ const Achievements: React.FC = () => {
   };
 
   useEffect(() => {
-    axios.get("/achievements/")
+    api.get("/achievements/")
       .then((response) => {
         setAchievements(response.data);
         setLoading(false);

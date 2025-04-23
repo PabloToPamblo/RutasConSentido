@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import api from "../services/api";
 
 interface Achievement {
   name: string;
@@ -19,7 +20,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ username, points }) => {
   useEffect(() => {
     const fetchAchievements = async () => {
       try {
-        const response = await fetch("/achievements/");
+        const response = await fetch("/api/achievements/");
         const data = await response.json();
         setAllAchievements(data);
       } catch (error) {
